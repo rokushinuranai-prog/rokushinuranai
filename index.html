@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>六神診断｜六神とは・無料診断・有料深掘り</title>
+<meta name="description" content="六神：龍・麒麟・鳳凰・玄武・白澤・饕餮。あなたの守護神タイプを無料診断。結果の深掘りは有料で解放。">
+<style>
+:root{--bg:#faf6ec;--fg:#1a1714;--card:#fff;--line:#e8e0d4;--accent:#b71234;--muted:#6d6257}
+*{box-sizing:border-box}html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,system-ui,sans-serif;line-height:1.7}
+.container{max-width:900px;margin:0 auto;padding:20px}
+.brand{font-size:28px;margin:8px 0 0}
+.tagline{margin:4px 0 0;color:var(--muted)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin:16px 0}
+.grid6{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media(min-width:720px){.grid6{grid-template-columns:repeat(3,1fr)}}
+.god{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff}
+.q{border:1px solid var(--line);border-radius:12px;padding:12px;margin:12px 0;background:#fff}
+.q.two{display:grid;gap:12px;grid-template-columns:1fr 1fr}
+.q input[type="text"],.q input[type="date"],.q input[type="time"]{width:100%;padding:10px;border:1px solid var(--line);border-radius:8px;background:#fff}
+label{display:block;margin:6px 0}
+.btn{display:inline-block;background:var(--accent);color:#fff;padding:10px 18px;border-radius:999px;text-decoration:none;border:none;cursor:pointer}
+.btn.ghost{background:transparent;border:1.5px solid var(--accent);color:var(--accent)}
+.hidden{display:none}
+.sep{border:none;border-top:1px solid var(--line);margin:16px 0}
+.accent{color:var(--accent);font-size:20px}
+.lead{margin:6px 0 12px}
+.pill{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.small{font-size:12px;color:var(--muted)}
+.smalltip{margin-top:12px}
+.bullets{margin:8px 0 0 16px;padding:0}
+.bullets li{margin:2px 0}
+hr.soft{border:none;border-top:1px dashed var(--line);margin:10px 0}
+.badge{display:inline-block;padding:2px 8px;border:1px solid var(--line);border-radius:999px;font-size:12px;color:var(--muted);background:#fff}
+</style>
+</head>
+<body>
+<header class="container">
+  <h1 class="brand">六神譚</h1>
+  <p class="tagline">六つの神が導く、あなたの内なる力。</p>
+</header>
+
+<main>
+  <!-- 六神とは -->
+  <section class="container card">
+    <h2>六神とは？</h2>
+    <p>六神（ろくしん）は、あなたの中で強く働く“守護の性質”を象徴する六柱の神。<br>
+       <span class="badge">無料診断で守護神タイプを判定 → 詳細は有料解放</span></p>
+    <div class="grid6">
+      <div class="god"><h3>🐉 龍</h3><p><b>行動力・守護</b>。天を駆け、道を切り開く守護の力。</p></div>
+      <div class="god"><h3>🦄 麟（麒麟）</h3><p><b>調和・正義</b>。誠実と温かさで人と場を整える。</p></div>
+      <div class="god"><h3>🕊️ 鳳凰</h3><p><b>再生・繁栄</b>。手放しと創造で流れを好転させる。</p></div>
+      <div class="god"><h3>🐢 玄武</h3><p><b>忍耐・安定</b>。基盤を固め、継続で実らせる。</p></div>
+      <div class="god"><h3>🦊 白澤</h3><p><b>知恵・洞察</b>。理と直感で真を見抜く賢者。</p></div>
+      <div class="god"><h3>🐲 饕餮</h3><p><b>勇気・突破</b>。恐れを破り、前人未踏に挑む。</p></div>
+    </div>
+  </section>
+
+  <!-- 無料診断 -->
+  <section class="container card" id="diagnose">
+    <h2>無料診断（1分）</h2>
+    <form id="quiz">
+      <div class="q">
+        <label>お名前（ニックネーム可）<br>
+          <input type="text" name="name" placeholder="例）Dio" required>
+        </label>
+      </div>
+      <div class="q two">
+        <label>生年月日<br><input type="date" name="dob" required></label>
+        <label>生まれ時間（任意）<br><input type="time" name="tob"></label>
+      </div>
+
+      <div class="q">
+        <p><strong>Q1.</strong> ピンと来たらまず動く？それとも十分に調べてから？</p>
+        <label><input type="radio" name="q1" value="intuit" required> まず動く（直感優先）</label>
+        <label><input type="radio" name="q1" value="logic"> 調べてから（理詰め）</label>
+      </div>
+
+      <div class="q">
+        <p><strong>Q2.</strong> いまのあなたに必要だと思うのは？</p>
+        <label><input type="radio" name="q2" value="break" required> 変化・突破の風</label>
+        <label><input type="radio" name="q2" value="base"> 土台の安定・守り</label>
+      </div>
+
+      <div class="q">
+        <p><strong>Q3.</strong> よく言われる長所は？</p>
+        <label><input type="radio" name="q3" value="lead" required> 決断力・推進力</label>
+        <label><input type="radio" name="q3" value="care"> 思いやり・調整力</label>
+      </div>
+
+      <div class="q">
+        <p><strong>Q4.</strong> 自分の美意識に自信がある？</p>
+        <label><input type="radio" name="q4" value="aesth" required> はい（審美眼が指針）</label>
+        <label><input type="radio" name="q4" value="none"> どちらかといえば実用重視</label>
+      </div>
+
+      <button type="submit" class="btn">診断する（無料）</button>
+    </form>
+
+    <!-- 結果 -->
+    <section id="result" class="hidden">
+      <hr class="sep">
+      <h3 id="type" class="accent"></h3>
+      <p id="lead" class="lead"></p>
+
+      <div class="pill">
+        <div><strong>今日のひと言</strong></div>
+        <div id="one"></div>
+      </div>
+
+      <div class="actions">
+        <!-- ▼ 決済リンク（Stripe/BASE等）に差し替えるだけ。空ならアラート表示 -->
+        <a id="readMore" class="btn" target="_blank" rel="noopener">
+          🔮 詳しい運勢・相性・開運法を読む（¥<span id="price">480</span>）
+        </a>
+        <a id="share" class="btn ghost" href="#" rel="noopener">結果をシェア</a>
+      </div>
+
+      <details class="smalltip">
+        <summary>六神の説明を見る</summary>
+        <ul class="bullets">
+          <li><b>龍</b>… 行動力・守護</li>
+          <li><b>麒麟</b>… 調和・正義</li>
+          <li><b>鳳凰</b>… 再生・繁栄</li>
+          <li><b>玄武</b>… 忍耐・安定</li>
+          <li><b>白澤</b>… 知恵・洞察</li>
+          <li><b>饕餮</b>… 勇気・突破</li>
+        </ul>
+      </details>
+
+      <hr class="soft">
+      <p class="small">※ 決済は後からURLを差し替えれば有効になります（今は診断体験のみ）。</p>
+    </section>
+  </section>
+</main>
+
+<footer class="container small">
+  © 六神譚
+</footer>
+
+<script>
+const $ = (s)=>document.querySelector(s);
+const quiz=$('#quiz'), result=$('#result'), typeEl=$('#type'), leadEl=$('#lead'), oneEl=$('#one');
+const buyBtn=$('#readMore'), priceEl=$('#price'), share=$('#share');
+
+// ▼ 決済URL（Stripe/BASE/BOOTH など）を後でここに入れる。空なら警告表示。
+const PAYMENT_LINK = ""; // 例: "https://buy.stripe.com/xxxx"
+if(PAYMENT_LINK){ buyBtn.href = PAYMENT_LINK; }
+else{
+  buyBtn.href = "#";
+  buyBtn.addEventListener('click',e=>{
+    e.preventDefault();
+    alert('決済リンクは後から有効化します。いまは無料診断のみ体験できます。');
+  });
+}
+
+// 六神：龍・麒麟・鳳凰・玄武・白澤・饕餮（確定）
+function scoreToType(ans){
+  const score = { '龍':0,'麒麟':0,'鳳凰':0,'玄武':0,'白澤':0,'饕餮':0 };
+
+  // Q1 直感/論理
+  if(ans.q1==='intuit'){ score['龍']++; score['饕餮']++; }
+  else { score['白澤']++; score['玄武']++; }
+
+  // Q2 変化/基盤
+  if(ans.q2==='break'){ score['龍']++; score['饕餮']++; }
+  else { score['玄武']++; score['麒麟']++; score['白澤']++; }
+
+  // Q3 リード/ケア
+  if(ans.q3==='lead'){ score['龍']++; score['饕餮']++; }
+  else { score['麒麟']++; score['玄武']++; }
+
+  // Q4 審美/実用
+  if(ans.q4==='aesth'){ score['鳳凰']++; score['麒麟']++; }
+  else { score['白澤']++; score['玄武']++; }
+
+  const type = Object.entries(score).sort((a,b)=>b[1]-a[1])[0][0];
+  const lead = {
+    '龍':'行動力と守護の風。いま一歩踏み出せば流れが変わる。',
+    '麒麟':'調和と正義が道を拓く。誠実さが最大の武器。',
+    '鳳凰':'再生と繁栄の兆し。美と創造が運を呼ぶ。',
+    '玄武':'忍耐と安定の時。基盤を固めて跳躍に備える。',
+    '白澤':'知恵と洞察が冴える。情報を整理すれば突破口が見える。',
+    '饕餮':'勇気と突破の局面。恐れよりも一手先へ。'
+  }[type];
+  const msg = {
+    '龍':'まず一歩。小さな行動が追い風を連れてくる。',
+    '麒麟':'優しさと義で人が集う。整えるほど運が寄る。',
+    '鳳凰':'手放しと磨き直しで復活の光。魅せ方を変えよう。',
+    '玄武':'積み重ねが力。睡眠・体調・習慣を最上に。',
+    '白澤':'仮説→検証。メモと整理で閃きを形に。',
+    '饕餮':'怖さを超える微行動を。小さな突破を連鎖させる。'
+  }[type];
+
+  return { type, lead, msg };
+}
+
+quiz.addEventListener('submit', (e)=>{
+  e.preventDefault();
+  const fd = new FormData(quiz);
+  const ans = Object.fromEntries(fd.entries());
+  const r = scoreToType(ans);
+
+  typeEl.textContent = `あなたの守護神は「${r.type}」`;
+  leadEl.textContent = r.lead;
+  oneEl.textContent  = r.msg;
+
+  // シェア用
+  share.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(`私の守護神は「${r.type}」でした。 #六神譚`)}&url=${encodeURIComponent(location.href)}`;
+
+  result.classList.remove('hidden');
+  result.scrollIntoView({behavior:'smooth'});
+});
+</script>
+</body>
+</html>
