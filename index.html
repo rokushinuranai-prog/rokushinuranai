@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>六神占い｜多占術ポータル</title>
+<meta name="description" content="六神（龍・麒麟・鳳凰・玄武・白澤・饕餮）× お悩み別占い。明るく上品なデザインの無料・有料占いポータル。">
+<style>
+/* ============ Design Tokens ============ */
+:root{
+  --bg:#fffaf5;
+  --panel:#ffffff;
+  --ink:#3d2b21;
+  --muted:#6c5b53;
+  --brand:#1fb6aa;           /* ミント */
+  --brand2:#ff7e5f;          /* コーラル */
+  --accent:#f6c453;          /* サフラン */
+  --ring: 0 0 0 3px rgba(31,182,170,.18);
+  --radius:18px;
+  --shadow:0 10px 30px rgba(0,0,0,.06);
+  --shadow-sm:0 4px 16px rgba(0,0,0,.05);
+  --chip:#f2fbfa;
+  --divider: #f2e7da;
+  --grad: linear-gradient(120deg,#fff4e3, #e4fff6 60%, #ffe9e3);
+}
+
+/* ============ Reset ============ */
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color:var(--ink); background:var(--bg);
+  line-height:1.75; letter-spacing:.02em;
+}
+h1,h2,h3{line-height:1.25;margin:0 0 .5em}
+h1{font-size:clamp(28px,4.5vw,40px)}
+h2{font-size:clamp(22px,3.5vw,28px)}
+h3{font-size:clamp(18px,3vw,22px)}
+p{margin:.4em 0}
+small{color:var(--muted)}
+a{color:inherit}
+
+/* ============ Layout ============ */
+.container{max-width:980px;margin:0 auto;padding:18px}
+.section{margin:22px auto}
+.card{
+  background:var(--panel); border-radius:var(--radius);
+  box-shadow:var(--shadow); padding:18px;
+}
+
+/* ============ Header ============ */
+.site-head{
+  background:var(--grad);
+  position:relative; overflow:hidden;
+  border-bottom:1px solid var(--divider);
+}
+.brand{
+  display:flex; gap:14px; align-items:center;
+  padding:28px 0 16px;
+}
+.logo{
+  width:44px; height:44px; border-radius:12px;
+  background: radial-gradient(circle at 25% 20%,#fff 0, #e9fff8 40%, #a6f4ea 100%);
+  display:grid; place-items:center; box-shadow:var(--shadow-sm); color:#333; font-weight:700;
+}
+.lead{
+  margin-top:10px;
+  background:#ffffffcc; backdrop-filter:saturate(140%) blur(6px);
+  border:1px solid #fff8; border-radius:16px; padding:16px 18px;
+}
+.cta-row{display:flex; flex-wrap:wrap; gap:10px; margin-top:12px}
+.btn{
+  appearance:none; border:1px solid transparent; cursor:pointer;
+  padding:12px 16px; border-radius:14px; font-weight:700;
+  transition:.15s transform ease, .15s box-shadow ease, .15s opacity ease;
+}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--brand); color:#fff; box-shadow:var(--shadow-sm)}
+.btn.outline{background:#fff; border-color:var(--brand); color:var(--brand)}
+.btn.smooth{background:linear-gradient(135deg,var(--brand2),#ffb88a); color:#fff}
+
+/* ============ Chips / Grid ============ */
+.grid{display:grid; gap:14px}
+@media (min-width:680px){ .grid.cols-2{grid-template-columns:1fr 1fr} }
+@media (min-width:960px){ .grid.cols-3{grid-template-columns:repeat(3,1fr)} }
+
+.chip{
+  display:inline-flex; align-items:center; gap:.5em;
+  padding:.4em .72em; border-radius:999px; font-weight:700;
+  background:var(--chip); border:1px solid #dff4f1; color:#1a6d66;
+}
+
+/* ============ “無料占い” Cards ============ */
+.tile{
+  border:1px solid var(--divider);
+  border-radius:16px; padding:16px;
+  background:linear-gradient(180deg,#fff, #fff9f2);
+}
+.tile h3{display:flex; justify-content:space-between; align-items:center}
+.badge{font-size:.78em; padding:.25em .6em; border-radius:999px; border:1px solid #dbe7e4; background:#fff; color:#3b8680}
+
+/* ============ 診断ラジオ ============ */
+.q-list{display:grid; gap:12px; margin-top:10px}
+.opt{
+  border:1.5px solid #ead9c6; border-radius:14px; padding:14px 12px; background:#fff;
+  display:flex; align-items:center; gap:10px;
+}
+.opt input{accent-color:var(--brand); width:20px; height:20px}
+.opt:has(input:checked){
+  border-color:var(--brand); box-shadow:var(--ring); background:#f7fffe;
+}
+
+/* ============ “六神とは” ============ */
+.god{border:1px solid var(--divider); border-radius:14px; padding:14px; background:#fff}
+.god-name{font-size:20px; font-weight:800; color:#b8860b}
+.ruby{display:block; color:#9a855f; font-weight:700; letter-spacing:.2em}
+
+/* ============ Footer ============ */
+.footer{
+  padding:24px 0 60px; color:var(--muted); text-align:center;
+}
+.footer a{color:var(--ink); text-decoration:none; border-bottom:1px solid #0002}
+.footer-nav{display:flex; gap:20px; justify-content:center; flex-wrap:wrap; margin-top:6px}
+hr.sep{border:none;border-top:1px dashed var(--divider); margin:10px 0}
+
+/* ============ Modal (簡易) ============ */
+.dialog-wrap{position:fixed; inset:0; display:none; place-items:center; z-index:50}
+.dialog-wrap.open{display:grid; background:rgba(0,0,0,.25)}
+.dialog{background:#fff; border-radius:16px; padding:20px; width:min(560px,90vw); box-shadow:var(--shadow)}
+.dialog h3{margin-bottom:.25em}
+.dialog .close{float:right; border:none; background:#fff; font-size:20px; cursor:pointer}
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="container">
+    <div class="brand">
+      <div class="logo">六</div>
+      <div>
+        <h1>六神占い</h1>
+        <small>多占術ポータル｜明るく上品に</small>
+      </div>
+    </div>
+
+    <div class="lead card">
+      <h2>1分でわかる守護神タイプ＋お悩み別占い</h2>
+      <p>無料の簡易占いと、有料の詳細鑑定（外部決済に対応）をこのページ1つで。</p>
+      <div class="cta-row">
+        <a href="#free" class="btn outline">無料占いへ</a>
+        <a href="#paid" class="btn primary">有料鑑定へ</a>
+        <a href="#about" class="btn smooth">六神とは</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- Free Readings Grid -->
+  <section id="free" class="section">
+    <h2>お悩み別・無料占い</h2>
+    <small>気になるテーマを選ぶと、軽いリーディング結果がモーダルで表示されます。</small>
+    <div class="grid cols-2 section">
+      <!-- tiles -->
+      <button class="tile" data-topic="出会い">
+        <h3>出会い占い <span class="badge">PRIME</span></h3>
+        <p>新しい縁を引きよせるタイミングと、動き方のヒント。</p>
+      </button>
+      <button class="tile" data-topic="結婚">
+        <h3>結婚占い <span class="badge">PRIME</span></h3>
+        <p>縁の成熟度・時期感・相性の焦点をチェック。</p>
+      </button>
+      <button class="tile" data-topic="相性">
+        <h3>相性占い <span class="badge">PRIME</span></h3>
+        <p>お互いの強みと、ぶつかりやすいポイントを和らげる鍵。</p>
+      </button>
+      <button class="tile" data-topic="片思い">
+        <h3>片思い占い <span class="badge">PRIME</span></h3>
+        <p>今の距離感を縮める一言／最適タイミング。</p>
+      </button>
+      <button class="tile" data-topic="不倫">
+        <h3>不倫占い <span class="badge">PRIME</span></h3>
+        <p>出口の設計図。心と現実を守るための選択肢。</p>
+      </button>
+      <button class="tile" data-topic="復縁">
+        <h3>復縁占い <span class="badge">PRIME</span></h3>
+        <p>復縁可否の見立てと、再開に必要な条件整理。</p>
+      </button>
+      <button class="tile" data-topic="金運">
+        <h3>金運占い <span class="badge">NEW</span></h3>
+        <p>収入口・守りの運・伸ばしどころを三方向で診断。</p>
+      </button>
+      <button class="tile" data-topic="人生">
+        <h3>人生占い <span class="badge">PRIME</span></h3>
+        <p>転機のサインと、今期のテーマカラー。</p>
+      </button>
+    </div>
+  </section>
+
+  <!-- Quick Diagnose -->
+  <section id="diag" class="section card">
+    <h2>あなたの守護神を診断</h2>
+    <small>直感で選んでOK。お名前はニックネームで構いません。</small>
+    <form id="form">
+      <label class="sr-only" for="name"></label>
+      <input id="name" name="name" placeholder="例）鈴木" class="opt" style="width:100%;padding:12px;border-radius:12px;border:1.5px solid #ead9c6;background:#fff;margin:10px 0">
+      <div class="q-list">
+        <label class="opt"><input type="radio" name="q" value="龍">すぐ行動するタイプ</label>
+        <label class="opt"><input type="radio" name="q" value="麒麟">人との調和を大事にする</label>
+        <label class="opt"><input type="radio" name="q" value="鳳凰">変化・再生を求める</label>
+        <label class="opt"><input type="radio" name="q" value="玄武">安定を重視する</label>
+        <label class="opt"><input type="radio" name="q" value="白澤">考えるのが好き</label>
+        <label class="opt"><input type="radio" name="q" value="饕餮">挑戦が好き・怖れない</label>
+      </div>
+      <div style="margin-top:12px"><button class="btn primary" type="submit">診断する</button></div>
+      <small>※ 入力情報は結果表示のみに使用し、保存しません。</small>
+    </form>
+  </section>
+
+  <!-- About Gods -->
+  <section id="about" class="section">
+    <h2>六神とは？</h2>
+    <p>六神（<ruby>龍<rt>りゅう</rt></ruby>／<ruby>麒麟<rt>きりん</rt></ruby>／<ruby>鳳凰<rt>ほうおう</rt></ruby>／<ruby>玄武<rt>げんぶ</rt></ruby>／<ruby>白澤<rt>はくたく</rt></ruby>／<ruby>饕餮<rt>とうてつ</rt></ruby>）は、あなたの中で強く働く守護の姿。要点でイメージを掴めます。</p>
+    <div class="grid cols-2 section">
+      <div class="god">
+        <span class="ruby">りゅう</span><div class="god-name">龍</div>
+        <p><b>行動力・守護。</b> 天を駆ける導きの象徴。まず一歩を踏み出すタイプ。</p>
+      </div>
+      <div class="god">
+        <span class="ruby">きりん</span><div class="god-name">麒麟</div>
+        <p><b>調和・正義。</b> 温かさで周囲を整える平和の神獣。</p>
+      </div>
+      <div class="god">
+        <span class="ruby">ほうおう</span><div class="god-name">鳳凰</div>
+        <p><b>再生・繁栄。</b> 手放しと創造で流れを好転させる。</p>
+      </div>
+      <div class="god">
+        <span class="ruby">げんぶ</span><div class="god-name">玄武</div>
+        <p><b>忍耐・安定。</b> 基盤を固める守護の神獣。</p>
+      </div>
+      <div class="god">
+        <span class="ruby">はくたく</span><div class="god-name">白澤</div>
+        <p><b>知恵・洞察。</b> 理と直感で真を見抜く賢者。</p>
+      </div>
+      <div class="god">
+        <span class="ruby">とうてつ</span><div class="god-name">饕餮</div>
+        <p><b>勇気・突破。</b> 恐れを破り未知を切り拓く。</p>
+      </div>
+    </div>
+
+    <details class="card"><summary>▼ 六神の説明をリストで見る</summary>
+      <ul>
+        <li>龍 … 行動力・守護。</li>
+        <li>麒麟 … 調和・正義。</li>
+        <li>鳳凰 … 再生・繁栄。</li>
+        <li>玄武 … 忍耐・安定。</li>
+        <li>白澤 … 知恵・洞察。</li>
+        <li>饕餮 … 勇気・突破。</li>
+      </ul>
+    </details>
+  </section>
+
+  <!-- Paid -->
+  <section id="paid" class="section card">
+    <h2>有料占い・開運鑑定</h2>
+    <p>詳細鑑定・相性・開運法を提供。<b>¥480〜（都度課金）</b>。Stripe / BASE などの外部決済に接続できます。</p>
+    <div class="cta-row">
+      <button id="buy" class="btn smooth">購入する</button>
+      <a href="#policy" class="btn outline">プライバシー／利用規約</a>
+    </div>
+    <p class="card" style="margin-top:12px;background:#fff6e6;border:1px dashed #ffcc99">
+      デモ：『購入する』で決済ダイアログ（ダミー）が開きます。本番では Stripe Checkout / BASE の支払いURLに置き換えてください。
+    </p>
+  </section>
+
+  <!-- Policy -->
+  <section id="policy" class="section card">
+    <h2>ポリシーと表記</h2>
+    <hr class="sep">
+    <details open><summary><b>プライバシーポリシー（要約）</b></summary>
+      <p>入力情報は結果表示のみに使用し、保存・第三者提供は行いません。決済は外部サービス（Stripe/BASE）で処理されます。</p>
+    </details>
+    <details><summary><b>利用規約（要約）</b></summary>
+      <ul>
+        <li>占い結果は娯楽・助言であり、成果の保証はいたしません。</li>
+        <li>不適切な利用、公序良俗に反する行為は禁止します。</li>
+      </ul>
+    </details>
+    <details><summary><b>免責事項</b></summary>
+      <p>当サイト情報により生じた損害について、運営者は一切の責任を負いません。</p>
+    </details>
+    <details><summary><b>特定商取引法に基づく表記（雛形）</b></summary>
+      <ul>
+        <li>販売事業者：六神占い（屋号例）</li>
+        <li>所在地／連絡先：〇〇（購入前に開示）</li>
+        <li>販売価格：各商品ページに記載・税込</li>
+        <li>お支払い方法：クレジットカード（Stripe/BASE）</li>
+        <li>返品・キャンセル：デジタル商品の性質上不可</li>
+      </ul>
+    </details>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div>© 六神占い</div>
+  <nav class="footer-nav">
+    <a href="#policy">プライバシー</a>
+    <a href="#policy">利用規約</a>
+    <a href="#about">六神とは</a>
+  </nav>
+</footer>
+
+<!-- Simple Modal -->
+<div class="dialog-wrap" id="dialog">
+  <div class="dialog">
+    <button class="close" aria-label="閉じる" onclick="closeDialog()">×</button>
+    <h3 id="dlgTitle">結果</h3>
+    <p id="dlgBody">…</p>
+  </div>
+</div>
+
+<script>
+/* ===== 無料占い（モーダル表示・簡易テキスト） ===== */
+const tips={
+  "出会い":[
+    "新月から7日間は『初めて行く場所』に縁。朝の散歩コースを変えるだけでもOK。",
+    "上半身に明るい色。笑顔より『うなずき』が出会いの鍵。"
+  ],
+  "結婚":[
+    "家事の分担観を先に擦り合わせると縁が早まります。",
+    "週の前半に長期の予定を一つ入れると、関係が前に進みやすい。"
+  ],
+  "相性":[
+    "相手の長所を3つ口に出して伝える。関係の土台が一段安定。",
+    "価値観の差は『役割の差』として整理すると調和しやすい。"
+  ],
+  "片思い":[
+    "既読の速度ではなく、返信の“質”を上げると距離が縮まるサイン。",
+    "2回に1回は質問で終える。相手の発話量が増えると好転。"
+  ],
+  "不倫":[
+    "まず『時間の線引き』を。境界が曖昧なほど心身の消耗が大きくなります。",
+    "出口を3案用意し、期限を決めて運用を。自分の安全が最優先。"
+  ],
+  "復縁":[
+    "“謝罪→要望”の順序ではなく、“共有→提案”で。相手の防御が下がります。",
+    "写真の整理で過去を俯瞰。復縁可否がはっきり見えやすい。"
+  ],
+  "金運":[
+    "固定費の1%削減が今期の開運アクション。まずは通信とサブスク。",
+    "財布より『口座の見える化』。残高の視認回数が運を呼び込みます。"
+  ],
+  "人生":[
+    "今期は“捨てる→空きをつくる→入る”。週1で30分の断捨離を。",
+    "テーマカラーは“ミント”。小物で取り入れると流れが整う。"
+  ]
+};
+
+function openDialog(title, body){
+  dlgTitle.textContent=title; dlgBody.textContent=body;
+  document.getElementById('dialog').classList.add('open');
+}
+function closeDialog(){ document.getElementById('dialog').classList.remove('open'); }
+document.getElementById('dialog').addEventListener('click',e=>{
+  if(e.target.id==='dialog') closeDialog();
+});
+
+document.querySelectorAll('.tile').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const t = btn.dataset.topic;
+    const arr = tips[t] || ["今は“整える”が吉。睡眠と水分を整えて。"];
+    const pick = arr[Math.floor(Math.random()*arr.length)];
+    openDialog(`${t}のヒント`, pick);
+  });
+});
+
+/* ===== 守護神 診断 ===== */
+document.getElementById('form').addEventListener('submit', e=>{
+  e.preventDefault();
+  const name = (document.getElementById('name').value || 'あなた').trim();
+  const val = (new FormData(e.target)).get('q');
+  const map={
+    "龍":"行動の火が強い日。朝に5分の散歩をすると運が回りやすい。",
+    "麒麟":"調和の風。感謝を一言伝えると縁が太くなる。",
+    "鳳凰":"再生の光。古いメモを1つ捨てると新しい運が入る。",
+    "玄武":"守りの大地。財布と玄関を整えると安定感UP。",
+    "白澤":"洞察の水。メモを取りながら話すと成果が出やすい。",
+    "饕餮":"突破の雷。小さな挑戦を“午前中”に。"
+  };
+  if(!val){ openDialog("入力が不足しています","最も近い性格を1つ選んでください。"); return;}
+  openDialog("診断結果",
+    `${name}の守護神タイプは「${val}」。<br>${map[val] || ""}`);
+});
+
+/* ===== 有料購入（ダミー） ===== */
+document.getElementById('buy').addEventListener('click',()=>{
+  openDialog("購入（デモ）",
+    "ここで Stripe Checkout / BASE の決済ページに遷移します。<br>本番ではボタンのクリックで外部URLへ遷移させてください。");
+});
+</script>
+</body>
+</html>
