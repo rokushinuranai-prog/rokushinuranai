@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>六神診断 | 守護神タイプと開運アドバイス</title>
+<meta name="description" content="六神（りゅう・きりん・ほうおう・げんぶ・はくたく・とうてつ）から、あなたの守護神タイプを診断。相性、開運、未来へのヒントも。">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#f7f4ee;
+  --paper:#fff;
+  --ink:#2b2623;
+  --muted:#7c746c;
+  --line:#e8e0d6;
+  --gold:#c89b3c;
+  --gold-deep:#9a6c1a;
+  --crimson:#b93a2f;
+}
+*{box-sizing:border-box}
+html,body{
+  margin:0;padding:0;
+  background:
+    radial-gradient(1200px 700px at 60% -200px, rgba(200,155,60,.08), transparent 60%),
+    radial-gradient(800px 500px at 0% 100%, rgba(185,58,47,.05), transparent 60%),
+    var(--bg);
+  color:var(--ink);
+  line-height:1.75;
+  font-family:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
+}
+.serif{font-family:"Noto Serif JP","Hiragino Mincho ProN",serif}
+header{
+  position:relative;
+  overflow:hidden;
+  padding:56px 16px 28px;
+  border-bottom:1px solid var(--line);
+  background:
+    linear-gradient(180deg, rgba(200,155,60,.12), rgba(200,155,60,0) 60%),
+    linear-gradient(45deg, rgba(0,0,0,.03) 0 25%, transparent 25% 50%, rgba(0,0,0,.03) 50% 75%, transparent 75% 100%);
+  background-size:100% 100%, 12px 12px;
+}
+.header-inner{max-width:960px;margin:0 auto;padding:0 20px;text-align:center}
+.logo{
+  display:inline-block;
+  padding:10px 18px;
+  border:2px solid var(--gold);
+  color:var(--gold-deep);
+  letter-spacing:.28em;
+  border-radius:10px;
+  font-weight:700;
+}
+h1{margin:14px 0 4px;font-size:40px;letter-spacing:.08em;color:var(--ink);}
+.sub{color:var(--muted);margin:0}
+.container{max-width:920px;margin:0 auto;padding:20px}
+.card{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:24px;
+  margin:22px 0;
+  box-shadow:0 6px 24px rgba(0,0,0,.06);
+}
+h2{font-size:28px;margin:0 0 12px}
+h3{font-size:20px;margin:18px 0 6px}
+ruby rt{font-size:.58em;color:var(--muted)}
+label{display:block;margin-top:12px;font-weight:700}
+input[type="text"]{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:#fff;font-size:16px;}
+.grid2{display:grid;gap:14px}
+@media(min-width:680px){.grid2{grid-template-columns:1fr 1fr}}
+.btn{
+  display:inline-block;border:none;cursor:pointer;text-decoration:none;
+  padding:12px 18px;border-radius:999px;font-weight:800;letter-spacing:.03em
+}
+.btn-gold{background:var(--gold);color:#fff;box-shadow:0 4px 0 rgba(154,108,26,.25)}
+.btn-gold:hover{filter:brightness(1.05)}
+.btn-ghost{background:transparent;color:var(--gold-deep);border:1px solid var(--gold-deep)}
+.pill{display:inline-block;padding:4px 10px;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-size:12px}
+.sep{border-top:1px solid var(--line);margin:20px 0}
+.small{font-size:13px;color:var(--muted)}
+.hidden{display:none}
+footer{text-align:center;padding:34px 0 40px;color:var(--muted);font-size:13px}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="header-inner">
+    <span class="logo serif">六 神 譚</span>
+    <h1 class="serif">六神診断</h1>
+    <p class="sub">守護神タイプと開運アドバイス</p>
+    <nav style="margin-top:14px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="btn btn-gold" data-tab="main">診断</button>
+      <button class="btn btn-ghost" data-tab="privacy">プライバシー</button>
+      <button class="btn btn-ghost" data-tab="terms">利用規約</button>
+    </nav>
+  </div>
+</header>
+
+<div class="container">
+  <section id="main" class="tab card">
+    <h2>あなたの守護神を診断</h2>
+    <p>六神（<ruby>龍<rt>りゅう</rt></ruby>・<ruby>麒麟<rt>きりん</rt></ruby>・<ruby>鳳凰<rt>ほうおう</rt></ruby>・<ruby>玄武<rt>げんぶ</rt></ruby>・<ruby>白澤<rt>はくたく</rt></ruby>・<ruby>饕餮<rt>とうてつ</rt></ruby>）から、あなたを導く守護神タイプを診断します。</p>
+
+    <label>お名前（ニックネーム可）
+      <input id="name" type="text" placeholder="例）鈴木">
+    </label>
+
+    <h3>Q：最も近い性格は？</h3>
+    <div class="grid2">
+      <label><input type="radio" name="q1" value="龍">すぐ行動するタイプ</label>
+      <label><input type="radio" name="q1" value="麒麟">調和を重んじる</label>
+      <label><input type="radio" name="q1" value="鳳凰">変化・再生を求める</label>
+      <label><input type="radio" name="q1" value="玄武">安定を重視する</label>
+      <label><input type="radio" name="q1" value="白澤">考えるのが好き</label>
+      <label><input type="radio" name="q1" value="饕餮">挑戦を恐れない</label>
+    </div>
+
+    <div style="margin-top:22px;">
+      <button class="btn btn-gold" id="diagnose">診断する</button>
+    </div>
+
+    <div id="result" class="card hidden">
+      <p class="small">診断結果</p>
+      <h3 id="rtitle"></h3>
+      <p id="rdesc"></p>
+      <h3>今日のひと言</h3>
+      <p id="rtip"></p>
+      <h3>相性・ラッキー</h3>
+      <p><b>相性：</b><span id="rmatch"></span></p>
+      <p><b>カラー：</b><span id="rcolor"></span>　<b>アイテム：</b><span id="ritem"></span></p>
+      <div style="margin-top:20px;">
+        <a id="buy" href="https://example.com/buy" target="_blank" class="btn btn-gold">有料鑑定を読む（¥480〜）</a>
+        <a id="share" href="#" target="_blank" class="btn btn-ghost">結果をシェア</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="privacy" class="tab card hidden">
+    <h2>プライバシーポリシー</h2>
+    <p>本サイトでは、入力されたニックネーム・診断回答などの個人情報を保存しません。診断内容は結果表示のみに使用されます。</p>
+    <p>有料鑑定は安全な決済代行サービス（Stripe等）を利用し、クレジットカード情報などは本サイトでは保持いたしません。</p>
+    <p>アクセス解析などの外部サービスを利用する場合、その詳細を別途明示します。</p>
+    <p class="small">最終更新日：2025年10月8日</p>
+  </section>
+
+  <section id="terms" class="tab card hidden">
+    <h2>利用規約</h2>
+    <ol>
+      <li>本サービスの診断結果は娯楽・自己理解の一助を目的としたものであり、内容の正確性や結果に関する責任は負いません。</li>
+      <li>有料鑑定は決済確認後に提供します。納品後の返金は対応できません。</li>
+      <li>著作権は運営者に帰属し、無断転載・商用利用を禁止します。</li>
+    </ol>
+    <p class="small">最終更新日：2025年10月8日</p>
+  </section>
+</div>
+
+<footer>© 六神占い | 2025</footer>
+
+<script>
+document.querySelectorAll('nav button').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('nav button').forEach(b=>b.classList.remove('btn-gold','active'));
+    btn.classList.add('btn-gold','active');
+    const tab=btn.dataset.tab;
+    document.querySelectorAll('.tab').forEach(s=>s.classList.add('hidden'));
+    document.getElementById(tab).classList.remove('hidden');
+    window.scrollTo({top:0,behavior:"smooth"});
+  });
+});
+const DATA={
+  "龍":{d:"行動力と守護。まず一歩で風が変わる。",t:"今日の行動が未来を導く。",m:"白澤",c:"金・赤",i:"万年筆"},
+  "麒麟":{d:"調和と正義。誠実さで周囲を整える。",t:"丁寧な言葉がチャンスを呼ぶ。",m:"玄武",c:"緑・白",i:"ハーブティー"},
+  "鳳凰":{d:"再生と繁栄。光をもたらす。",t:"古いものを手放すと新しい縁が生まれる。",m:"龍",c:"朱・橙",i:"キャンドル"},
+  "玄武":{d:"忍耐と安定。基盤を固める。",t:"整える時間が未来を支える。",m:"麒麟",c:"紺・黒",i:"手帳"},
+  "白澤":{d:"知恵と洞察。真を見抜く賢者。",t:"静かな時間に答えがある。",m:"鳳凰",c:"白・銀",i:"メガネ"},
+  "饕餮":{d:"勇気と突破。恐れを破る開拓者。",t:"小さな挑戦が流れを変える。",m:"鳳凰",c:"紫・黒",i:"イヤホン"}
+};
+document.getElementById('diagnose').addEventListener('click',()=>{
+  const name=(document.getElementById('name').value||"あなた").trim();
+  const q1=document.querySelector('input[name="q1"]:checked');
+  if(!q1){alert("選択してください");return;}
+  const g=q1.value,d=DATA[g];
+  document.getElementById('rtitle').textContent=`${name} の守護神は「${g}」`;
+  document.getElementById('rdesc').textContent=d.d;
+  document.getElementById('rtip').textContent=d.t;
+  document.getElementById('rmatch').textContent=d.m;
+  document.getElementById('rcolor').textContent=d.c;
+  document.getElementById('ritem').textContent=d.i;
+  document.getElementById('result').classList.remove('hidden');
+  const text=encodeURIComponent(`私の守護神は「${g}」でした。 #六神診断`);
+  const url=encodeURIComponent(location.href);
+  document.getElementById('share').href=`https://twitter.com/intent/tweet?text=${text}&url=${url}`;
+  document.getElementById('buy').href=`https://example.com/buy?type=${g}`;
+  document.getElementById('result').scrollIntoView({behavior:'smooth'});
+});
+</script>
+</body>
+</html>
