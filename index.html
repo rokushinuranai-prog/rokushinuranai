@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>六神占い｜金碧グラデ＋神紋アニメ＋BGM</title>
+<meta name="description" content="魂を導く六神（ろくしん）の神獣診断と多占術ポータル。金碧グラデーション、淡い神紋アニメ背景、BGM搭載。">
+<style>
+  :root{
+    --bg-start:#fdf6e9;      /* クリーム */
+    --bg-end:#fff;           /* 白 */
+    --gold:#b88a2c;          /* 見出し金 */
+    --goldDeep:#8d6b1a;      /* 影用 */
+    --ink:#3c3a37;           /* 本文 */
+    --card:#fffdf7;          /* カード面 */
+    --line:#f0e7d3;          /* 枠線 */
+    --accent:#ffcb66;        /* CTA */
+    --accent2:#1fb9a3;       /* 診断ボタン内グラデ影 */
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic","Noto Sans JP",Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--bg-start),var(--bg-end));}
+  /* 背景キャンバス */
+  #bgCanvas{position:fixed;inset:0;z-index:-1;filter: blur(0.6px) saturate(105%);opacity:.65}
+  /* レイアウト */
+  .container{max-width:1120px;margin:0 auto;padding:24px 16px 80px}
+  .hero{padding:56px 16px 32px;text-align:center;position:relative}
+  .logo-ghost{font-size:38px;letter-spacing:.2em;color:#d7caa5;opacity:.55;text-shadow:0 1px 0 #fff}
+  .title{font-weight:800;font-size:40px;margin:6px 0 10px;color:var(--gold);text-shadow:0 2px 0 #fff}
+  .subtitle{opacity:.85}
+  .ctaRow{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:20px}
+  .btn{
+    appearance:none;border:1px solid #e6d9be;background:linear-gradient(#fff7e5,#f7e8c9);
+    color:#7c5a16;border-radius:999px;padding:12px 20px;font-weight:700;letter-spacing:.08em;
+    box-shadow:0 3px 0 #e7d7b6, 0 6px 22px rgba(184,138,44,.18);
+    transition:.2s transform,.2s filter;
+  }
+  .btn:hover{transform:translateY(-1px);filter:brightness(1.04)}
+  .btn.primary{background:linear-gradient(#ffe29d,#ffd36d);border-color:#f1c86f}
+  /* 6神カード */
+  h2.section{margin:40px 0 16px;font-weight:900;color:var(--gold);text-shadow:0 2px 0 #fff}
+  .grid{display:grid;gap:14px}
+  @media(min-width:640px){.grid.cols-2{grid-template-columns:repeat(2,1fr)}}
+  @media(min-width:980px){.grid.cols-3{grid-template-columns:repeat(3,1fr)}}
+  .god-card{
+    background:linear-gradient(#fffefb,#fff8e9);
+    border:1px solid var(--line);border-radius:18px;padding:18px;
+    box-shadow:0 6px 24px rgba(0,0,0,.04), inset 0 0 0 1px #ffffffa0;
+    position:relative;overflow:hidden
+  }
+  .god-card::before{
+    content:"";position:absolute;inset:10px;border-radius:16px;border:1px dashed #eddcbd70;
+    mask:radial-gradient(transparent 28%,#000 30%);opacity:.6
+  }
+  .god-name{display:flex;align-items:first baseline;gap:8px;margin-bottom:6px}
+  .ruby{font-size:12px;color:#9d8752}
+  .kanji{font-family:"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",serif;font-size:26px;color:#b99334}
+  .desc{line-height:1.9}
+  /* 占術メニュー */
+  .menu-grid{display:grid;gap:12px;margin-top:8px}
+  @media(min-width:640px){.menu-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(min-width:980px){.menu-grid{grid-template-columns:repeat(4,1fr)}}
+  .menu-item{
+    background:linear-gradient(#fffefc,#fff8ea);
+    border:1px solid var(--line);padding:14px 16px;border-radius:14px;text-align:center;
+    font-weight:700;box-shadow:0 4px 18px rgba(0,0,0,.04)
+  }
+  /* 診断 */
+  .panel{background:#fffdf8;border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:0 6px 24px rgba(0,0,0,.04)}
+  label{font-weight:800;color:#7b611f}
+  select,input{width:100%;padding:12px 14px;border:1px solid #eadfc8;border-radius:12px;background:#fff}
+  .pill{display:inline-flex;align-items:center;gap:.5em;padding:11px 18px;border-radius:999px;
+    color:#6f4e0c;border:1px solid #f2dca9;background:linear-gradient(#fff1c9,#ffe39f)}
+  /* モーダル */
+  .modal{position:fixed;inset:0;background:rgba(20,16,8,.24);display:none;align-items:center;justify-content:center;padding:16px;z-index:50}
+  .modal.active{display:flex}
+  .modal .box{max-width:560px;width:100%;background:#fffef9;border:1px solid #efdfc2;border-radius:18px;padding:20px;box-shadow:0 30px 70px rgba(0,0,0,.22)}
+  .close{float:right;border:none;background:transparent;font-size:24px}
+  /* フッター */
+  footer{margin-top:40px;color:#7c6a45}
+  .links{display:flex;gap:18px;flex-wrap:wrap;justify-content:center}
+  /* BGMボタン */
+  .audio-toggle{
+    position:fixed;right:14px;bottom:16px;z-index:60;border:none;border-radius:999px;
+    padding:10px 14px;font-weight:800;color:#0d665b;background:linear-gradient(#e8fff6,#d0fbef);border:1px solid #a6ecda;
+    box-shadow:0 10px 30px rgba(8,140,120,.15)
+  }
+  .audio-toggle.muted{color:#7b6a3c;background:linear-gradient(#fff3da,#ffe9b5);border:1px solid #f3d79b}
+  /* 小さめ端末の余白調整 */
+  @media(max-width:360px){.title{font-size:34px}.logo-ghost{font-size:30px}}
+</style>
+</head>
+<body>
+<canvas id="bgCanvas" aria-hidden="true"></canvas>
+
+<div class="container">
+  <!-- HERO -->
+  <section class="hero" role="banner" aria-label="六神占い ヒーロー">
+    <div class="logo-ghost">ろくしんうらない</div>
+    <h1 class="title">六神占い</h1>
+    <p class="subtitle">魂を導く神獣を見出し、運命と調和する。</p>
+    <div class="ctaRow">
+      <button class="btn primary" onclick="document.getElementById('diag').scrollIntoView({behavior:'smooth'})">無料診断をはじめる</button>
+      <button class="btn" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">六神とは</button>
+    </div>
+  </section>
+
+  <!-- 六神とは -->
+  <section id="about">
+    <h2 class="section">六神（<span class="ruby">ろくしん</span>）とは</h2>
+    <p>あなたの魂を守り導く六つの神獣。それぞれが異なる「力」と「徳」を司り、人生の方向性を照らします。</p>
+
+    <div class="grid cols-2 cols-3" style="margin-top:14px">
+      <!-- 龍 -->
+      <article class="god-card">
+        <div class="god-name"><span class="ruby">りゅう</span><span class="kanji">龍</span></div>
+        <p class="desc"><b>行動力・守護。</b> 天を駆け、道を切り拓く者。</p>
+      </article>
+      <!-- 麟 -->
+      <article class="god-card">
+        <div class="god-name"><span class="ruby">きりん</span><span class="kanji">麒麟</span></div>
+        <p class="desc"><b>調和・正義。</b> 優しさと秩序を司る聖獣。</p>
+      </article>
+      <!-- 鳳凰 -->
+      <article class="god-card">
+        <div class="god-name"><span class="ruby">ほうおう</span><span class="kanji">鳳凰</span></div>
+        <p class="desc"><b>再生・繁栄。</b> 希望を灯す再生の象徴。</p>
+      </article>
+      <!-- 玄武 -->
+      <article class="god-card">
+        <div class="god-name"><span class="ruby">げんぶ</span><span class="kanji">玄武</span></div>
+        <p class="desc"><b>忍耐・安定。</b> 継続と信頼を築く守護者。</p>
+      </article>
+      <!-- 白澤 -->
+      <article class="god-card">
+        <div class="god-name"><span class="ruby">はくたく</span><span class="kanji">白澤</span></div>
+        <p class="desc"><b>知恵・洞察。</b> 真理を見抜く賢者。</p>
+      </article>
+      <!-- 饕餮 -->
+      <article class="god-card">
+        <div class="god-name"><span class="ruby">とうてつ</span><span class="kanji">饕餮</span></div>
+        <p class="desc"><b>勇気・突破。</b> 恐れを破り前進する戦士。</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- 多占術メニュー -->
+  <section style="margin-top:28px">
+    <h2 class="section">多占術メニュー</h2>
+    <div class="menu-grid">
+      <button class="menu-item" onclick="openLite('五行占い','木火土金水の偏りから今の整え方を提案。')">五行占い</button>
+      <button class="menu-item" onclick="openLite('星宿占い','生まれ星で性質と相性のヒントを提示。')">星宿占い</button>
+      <button class="menu-item" onclick="openLite('今日の運勢','今日の開運行動・ラッキー色。')">今日の運勢</button>
+      <button class="menu-item" onclick="openLite('金運占い','巡りと使い方の整えポイント。')">金運占い</button>
+      <button class="menu-item" onclick="openLite('恋愛占い','想いの温度と動かし方。')">恋愛占い</button>
+      <button class="menu-item" onclick="openLite('相性占い','関係性の強みと注意点。')">相性占い</button>
+      <button class="menu-item" onclick="openLite('健康運','体調の波と整える養生。')">健康運</button>
+      <button class="menu-item" onclick="openLite('仕事運','成果が出る動き方。')">仕事運</button>
+      <button class="menu-item" onclick="openLite('開運鑑定','今週の波に乗る鍵。')">開運鑑定</button>
+    </div>
+  </section>
+
+  <!-- 診断 -->
+  <section id="diag" style="margin-top:28px">
+    <h2 class="section">六神診断（<span class="ruby">ろくしんしんだん</span>）</h2>
+    <div class="panel">
+      <div style="display:grid;gap:14px">
+        <div>
+          <label for="q1">① 今の自分に最も近いテーマ</label>
+          <select id="q1">
+            <option>行動と突破</option>
+            <option>人との調和</option>
+            <option>変化と再生</option>
+            <option>安定と継続</option>
+            <option>考察と真理</option>
+            <option>挑戦と胆力</option>
+          </select>
+        </div>
+        <div>
+          <label for="q2">② 今週の雰囲気</label>
+          <select id="q2">
+            <option>変化を感じている</option>
+            <option>流れを整えたい</option>
+            <option>基盤を固めたい</option>
+            <option>新しい挑戦がある</option>
+            <option>学びや気付きが多い</option>
+            <option>勢いを出したい</option>
+          </select>
+        </div>
+        <div>
+          <label for="name">ニックネーム（任意・保存用）</label>
+          <input id="name" type="text" placeholder="例）お名前">
+        </div>
+        <div style="text-align:center">
+          <button class="pill" onclick="diagnose()">結果を見る</button>
+        </div>
+        <small style="opacity:.7">※入力情報は結果表示のみに使用し、保存はしません。</small>
+      </div>
+    </div>
+  </section>
+
+  <!-- 運営 -->
+  <section style="margin-top:28px">
+    <h2 class="section">運営・ポリシー</h2>
+    <div class="panel" style="display:grid;gap:12px">
+      <details open><summary><b>プライバシーポリシー（要約）</b></summary>
+        入力情報は結果表示のみに使用し、第三者提供は行いません。決済導入時は外部サービス（Stripe等）にて処理します。
+      </details>
+      <details><summary><b>利用規約（要約）</b></summary>
+        占い結果は助言であり、成果の保証は行いません。不適切な利用・公序良俗に反する行為は禁止します。
+      </details>
+    </div>
+  </section>
+
+  <footer>
+    <p style="text-align:center;margin:26px 0 8px;">© 六神占い — ROKUSHIN FORTUNE.</p>
+    <div class="links">
+      <a href="#!" onclick="openLite('プライバシー','上記の要約をご確認ください。')">プライバシー</a>
+      <a href="#!" onclick="openLite('利用規約','上記の要約をご確認ください。')">利用規約</a>
+      <a href="#about">六神とは</a>
+    </div>
+  </footer>
+</div>
+
+<!-- BGM（mp3は著作権フリーの短尺を想定。差し替え可） -->
+<audio id="bgm" loop preload="auto">
+  <source src="https://cdn.jsdelivr.net/gh/naptests/stock-audio@main/mellow-ambient-16s.mp3" type="audio/mpeg">
+</audio>
+<button id="audioBtn" class="audio-toggle muted" aria-pressed="false" aria-label="BGMの切替">♪ 音をON</button>
+
+<!-- モーダル -->
+<div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="box">
+    <button class="close" aria-label="閉じる" onclick="closeModal()">×</button>
+    <h3 id="modalTitle" style="margin-top:0;color:var(--gold)">結果</h3>
+    <div id="modalBody" style="line-height:1.9"></div>
+  </div>
+</div>
+
+<script>
+/* =========================
+   背景：淡い神紋アニメーション
+   ========================= */
+(function(){
+  const c = document.getElementById('bgCanvas');
+  const ctx = c.getContext('2d');
+  let dpr = Math.max(1, window.devicePixelRatio || 1);
+  function resize(){
+    c.width = innerWidth * dpr;
+    c.height = innerHeight * dpr;
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+  resize(); addEventListener('resize',resize);
+
+  const motifs = [];
+  const palette = ['#eedfb6','#e8d59b','#f4e7c8','#e6d9be','#fff6da'];
+  for(let i=0;i<36;i++){
+    motifs.push({
+      x: Math.random()*innerWidth,
+      y: Math.random()*innerHeight,
+      r: 30+Math.random()*120,
+      spd: .2 + Math.random()*.5,
+      rot: Math.random()*Math.PI*2,
+      type: ['circle','tri','square'][Math.floor(Math.random()*3)],
+      col: palette[Math.floor(Math.random()*palette.length)],
+      alpha: .10 + Math.random()*.12
+    });
+  }
+  function draw(){
+    ctx.clearRect(0,0,innerWidth,innerHeight);
+    // グラデの霞（上明・下金）
+    const g = ctx.createLinearGradient(0,0,0,innerHeight);
+    g.addColorStop(0,'rgba(255,255,255,.85)');
+    g.addColorStop(1,'rgba(255,232,170,.20)');
+    ctx.fillStyle = g; ctx.fillRect(0,0,innerWidth,innerHeight);
+
+    motifs.forEach(m=>{
+      ctx.save();
+      ctx.translate(m.x, m.y);
+      ctx.rotate(m.rot);
+      ctx.globalAlpha = m.alpha;
+      ctx.lineWidth = 1.2;
+      ctx.strokeStyle = m.col;
+      switch(m.type){
+        case 'circle':
+          ctx.beginPath(); ctx.arc(0,0,m.r,0,Math.PI*2); ctx.stroke();
+          ctx.beginPath(); ctx.arc(0,0,m.r*0.6,0,Math.PI*2); ctx.stroke();
+          break;
+        case 'tri':
+          const t = m.r;
+          ctx.beginPath();
+          ctx.moveTo(0,-t);
+          ctx.lineTo(t*.866,t*.5);
+          ctx.lineTo(-t*.866,t*.5);
+          ctx.closePath(); ctx.stroke();
+          break;
+        case 'square':
+          const s = m.r*1.2;
+          ctx.strokeRect(-s/2,-s/2,s,s);
+          ctx.strokeRect(-s/4,-s/4,s/2,s/2);
+          break;
+      }
+      ctx.restore();
+      // ゆっくり上昇＆回転
+      m.y -= m.spd*0.3;
+      m.rot += 0.0015*m.spd;
+      if(m.y < -160) m.y = innerHeight + 160;
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* =========================
+   診断ロジック（簡易）
+   ========================= */
+function diagnose(){
+  const q1 = document.getElementById('q1').value;
+  const q2 = document.getElementById('q2').value;
+  const name = (document.getElementById('name').value || 'あなた').trim();
+
+  // とても簡易な割当（体験用）
+  const map = {
+    '行動と突破':'龍','人との調和':'麒麟','変化と再生':'鳳凰',
+    '安定と継続':'玄武','考察と真理':'白澤','挑戦と胆力':'饕餮'
+  };
+  const god = map[q1] || '龍';
+
+  const lines = {
+    '龍':'第一歩を踏み出す時。小さく速く始めると流れが掴めます。',
+    '麒麟':'信頼を積む行為が吉。挨拶・礼節・整頓で運が開く。',
+    '鳳凰':'手放しと再創造。古いルールを一つ外すと再生が加速。',
+    '玄武':'足場固め。生活リズムと資源管理に福あり。',
+    '白澤':'学びと観察が鍵。記録すると真理が見える。',
+    '饕餮':'恐れの壁を破る挑戦を一つ。小さな勝利が連鎖。'
+  };
+  const tip = lines[god];
+
+  openModal(
+    `${name}の守護神は「<b>${god}</b>」。`,
+    `テーマ：<b>${q1}</b>　｜　今週：<b>${q2}</b><br><br>${tip}`
+  );
+}
+
+/* =========================
+   モーダル & ライト占い
+   ========================= */
+function openModal(title,html){
+  document.getElementById('modalTitle').innerHTML = title;
+  document.getElementById('modalBody').innerHTML = html;
+  document.getElementById('modal').classList.add('active');
+}
+function closeModal(){document.getElementById('modal').classList.remove('active')}
+function openLite(title,text){openModal(title, text)}
+
+/* =========================
+   BGM：iOS対策付き切替
+   ========================= */
+(function(){
+  const audio = document.getElementById('bgm');
+  const btn = document.getElementById('audioBtn');
+  let wanted = localStorage.getItem('rokushin_bgm') === 'on';
+
+  function setBtn(){
+    if(audio.muted || audio.paused){
+      btn.classList.add('muted'); btn.textContent = '♪ 音をON'; btn.setAttribute('aria-pressed','false');
+    } else {
+      btn.classList.remove('muted'); btn.textContent = '♪ 音をOFF'; btn.setAttribute('aria-pressed','true');
+    }
+  }
+
+  async function tryPlay(){
+    try{
+      await audio.play();
+    }catch(e){/* ブラウザがブロック中 */}
+    setBtn();
+  }
+
+  // 初回：ユーザー操作で有効化
+  btn.addEventListener('click', async ()=>{
+    if(audio.paused){ wanted = true; localStorage.setItem('rokushin_bgm','on'); await tryPlay(); }
+    else { audio.pause(); wanted = false; localStorage.setItem('rokushin_bgm','off'); }
+    setBtn();
+  });
+
+  // 画面タップで一度だけ再生トライ（iOS）
+  const firstGesture = ()=>{ if(wanted){ tryPlay(); } window.removeEventListener('touchstart',firstGesture); window.removeEventListener('click',firstGesture); };
+  window.addEventListener('touchstart', firstGesture, {once:true});
+  window.addEventListener('click', firstGesture, {once:true});
+
+  // 復帰時
+  document.addEventListener('visibilitychange',()=>{ if(!document.hidden && wanted) tryPlay(); });
+
+  // 初期状態
+  if(wanted) tryPlay(); else setBtn();
+})();
+</script>
+</body>
+</html>
