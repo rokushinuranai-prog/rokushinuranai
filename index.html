@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>六神占い ROKUSHIN FORTUNE｜魂を導く多占術ポータル</title>
+<meta name="description" content="六神・五行・星宿・金運・相性を網羅した多占術ポータル。Stripe/Firebase対応の商用版占いサイト。">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700&family=Yuji+Syuku&display=swap" rel="stylesheet">
+
+<style>
+:root{
+ --gold:#d8b95e;
+ --aqua:#6ac1c5;
+ --dark:#3c2f1e;
+ --bg1:#faf8f3;
+ --bg2:#fffdf8;
+ --glow:rgba(255,255,210,.6);
+}
+body{
+ margin:0;padding:0;font-family:'Noto Sans JP',sans-serif;
+ background:linear-gradient(180deg,var(--bg1),var(--bg2));
+ color:var(--dark);overflow-x:hidden;text-align:center;
+}
+h1,h2,h3{font-family:'Yuji Syuku',serif;color:var(--gold);}
+video.bg{
+ position:fixed;inset:0;width:100%;height:100%;
+ object-fit:cover;z-index:-2;opacity:.35;
+}
+.logo{
+ font-size:clamp(34px,6vw,54px);
+ letter-spacing:3px;
+ background:linear-gradient(90deg,#fbe694,var(--gold));
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
+ text-shadow:0 0 10px rgba(255,255,255,.6);
+}
+header{
+ padding:70px 0 40px;
+ position:relative;
+ background:radial-gradient(circle at 50% 0%,rgba(255,255,255,.6),transparent 70%);
+}
+header::after{
+ content:"";position:absolute;inset:0;
+ background:radial-gradient(ellipse at center,rgba(255,240,150,.3),transparent 70%);
+ mix-blend-mode:screen;animation:shine 10s ease-in-out infinite alternate;
+}
+@keyframes shine{from{opacity:.4;}to{opacity:.8;}}
+.container{width:min(1080px,94%);margin:auto;position:relative;z-index:2;}
+.btn{
+ display:inline-block;padding:12px 28px;margin:8px;border-radius:30px;
+ border:none;font-weight:700;cursor:pointer;transition:.3s;
+}
+.btn-primary{
+ background:linear-gradient(90deg,var(--gold),#f7e57a);
+ color:#432;box-shadow:0 0 10px rgba(250,240,190,.6);
+}
+.btn-primary:hover{transform:scale(1.05);}
+.btn-outline{
+ background:transparent;border:1px solid var(--gold);color:var(--gold);
+}
+section{
+ background:#fffdf8e0;border-radius:16px;
+ margin:20px auto;padding:22px;
+ box-shadow:0 6px 14px rgba(0,0,0,.06);
+}
+.card-grid{
+ display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+ gap:12px;
+}
+.card{
+ background:linear-gradient(180deg,#fff,#fbf6e9);
+ border:1px solid #f1e4ba;border-radius:14px;padding:14px;
+ transition:.3s;
+}
+.card:hover{
+ box-shadow:0 0 18px rgba(212,175,55,.4);
+ transform:translateY(-2px);
+}
+footer{margin:40px 0 60px;color:#7c6b3b;font-size:.9em;}
+.modal{
+ position:fixed;inset:0;background:rgba(0,0,0,.6);
+ display:none;align-items:center;justify-content:center;z-index:50;
+}
+.modal-content{
+ background:#fffefc;border-radius:18px;padding:22px;
+ width:min(90%,520px);text-align:left;
+ box-shadow:0 0 12px rgba(255,255,200,.5);
+}
+hr{border:none;border-top:1px solid #f0e6c0;margin:26px 0;}
+.ai-box{
+ background:rgba(255,255,255,.6);
+ border:1px solid #f5e7c1;
+ border-radius:14px;
+ padding:16px;margin-top:16px;
+ font-size:0.95em;
+ box-shadow:0 0 10px rgba(255,255,220,.4);
+}
+</style>
+</head>
+<body>
+
+<video class="bg" autoplay muted loop playsinline>
+  <source src="https://cdn.pixabay.com/vimeo/527044126/clouds-1080p.mp4" type="video/mp4">
+</video>
+
+<header>
+  <div class="container">
+    <h1 class="logo">六神占い ROKUSHIN FORTUNE</h1>
+    <p style="color:#7e6a40;font-weight:600;">魂を導く多占術ポータル</p>
+    <button class="btn btn-primary" onclick="scrollToId('diagnosis')">無料診断をはじめる</button>
+    <button class="btn btn-outline" onclick="scrollToId('about')">六神とは</button>
+  </div>
+</header>
+
+<main class="container">
+
+<section id="about">
+  <h2>六神（ろくしん）とは</h2>
+  <p>あなたの魂を守り導く六つの神獣。それぞれが異なる「力」と「徳」を司り、人生の方向性を照らします。</p>
+  <div class="card-grid">
+    <div class="card"><h3>龍</h3><p>行動力・守護 — 天を駆け、道を切り拓く者。</p></div>
+    <div class="card"><h3>麒麟</h3><p>調和・正義 — 優しさと秩序を司る聖獣。</p></div>
+    <div class="card"><h3>鳳凰</h3><p>再生・繁栄 — 希望をもたらす再生の象徴。</p></div>
+    <div class="card"><h3>玄武</h3><p>忍耐・安定 — 継続と信頼を築く守護者。</p></div>
+    <div class="card"><h3>白澤</h3><p>知恵・洞察 — 真理を見抜く賢者。</p></div>
+    <div class="card"><h3>饕餮</h3><p>勇気・突破 — 恐れを破り前進する戦士。</p></div>
+  </div>
+</section>
+
+<section id="multi">
+  <h2>多占術メニュー</h2>
+  <div class="card-grid">
+    <div class="card" onclick="openModal('五行占い','火・水・木・金・土の五行バランスで今週の運気を解析します。')">五行占い</div>
+    <div class="card" onclick="openModal('星宿占い','生まれた宿から本質と宿命を読み解く27宿占い。')">星宿占い</div>
+    <div class="card" onclick="openModal('今日の運勢','恋愛・仕事・金運の三方向から今日を照らす。')">今日の運勢</div>
+    <div class="card" onclick="openModal('金運占い','金運・仕事運・幸運期を分析。')">金運占い</div>
+    <div class="card" onclick="openModal('相性占い','相手との魂相性を六神×五行で判定。')">相性占い</div>
+  </div>
+</section>
+
+<section id="diagnosis">
+  <h2>六神診断</h2>
+  <form onsubmit="event.preventDefault();diagnose();">
+    <label>① 今の自分に最も近いテーマ</label><br>
+    <select id="q1">
+      <option value="龍">行動と突破</option>
+      <option value="麒麟">調和と優しさ</option>
+      <option value="鳳凰">再出発・創造</option>
+      <option value="玄武">安定と忍耐</option>
+      <option value="白澤">学びと洞察</option>
+      <option value="饕餮">挑戦と冒険</option>
+    </select><br><br>
+    <label>② 直近1週間の雰囲気</label><br>
+    <select id="q2">
+      <option value="鳳凰">変化の波を感じている</option>
+      <option value="玄武">地道に積み重ねたい</option>
+      <option value="龍">動き出したい</option>
+      <option value="白澤">考えが深まっている</option>
+      <option value="麒麟">人との調和を重んじる</option>
+      <option value="饕餮">挑戦心が高まっている</option>
+    </select><br><br>
+    <label>ニックネーム（任意・保存用）</label><br>
+    <input type="text" id="name" placeholder="例）お名前"><br><br>
+    <button type="submit" class="btn btn-primary">結果を見る</button>
+  </form>
+  <div id="result" style="display:none;margin-top:20px;"></div>
+</section>
+
+<section id="policy">
+  <h2>運営・ポリシー</h2>
+  <details><summary>プライバシーポリシー</summary>
+  <p>診断結果は匿名で保存。決済はStripeを介して安全に処理されます。</p></details>
+  <details><summary>利用規約</summary>
+  <p>本サービスはエンタメ体験を目的としています。結果の保証はいたしません。</p></details>
+</section>
+
+</main>
+
+<footer>
+  <p>© 六神占い — ROKUSHIN FORTUNE. All rights reserved.</p>
+</footer>
+
+<div class="modal" id="modal"><div class="modal-content" id="modal-content"></div></div>
+
+<script>
+const godTexts={
+ "龍":"行動力・守護。信念で突破するリーダー。",
+ "麒麟":"調和・正義。誠実で温かい導き手。",
+ "鳳凰":"再生・繁栄。変化を好む創造者。",
+ "玄武":"忍耐・安定。努力を積み重ねる守護者。",
+ "白澤":"知恵・洞察。理性と直感の賢者。",
+ "饕餮":"勇気・突破。恐れず挑戦する戦士。"
+};
+function scrollToId(id){document.getElementById(id).scrollIntoView({behavior:"smooth"});}
+function diagnose(){
+ const q1=document.getElementById("q1").value,q2=document.getElementById("q2").value;
+ const final=(q1===q2)?q1:(Math.random()>0.5?q1:q2);
+ const result=document.getElementById("result");
+ result.innerHTML=`<h3>あなたの守護神は「${final}」</h3><p>${godTexts[final]}</p>
+ <a href="https://buy.stripe.com/test_XXXX" target="_blank" class="btn btn-outline">有料鑑定 ¥480〜</a>
+ <div class='ai-box'><strong>六神AI助言：</strong><br>「${final}」の加護を受ける今、<br>直感と行動を一致させることで運が動きます。<br>深く考えすぎず、まず一歩を。</div>`;
+ result.style.display="block";
+ saveResult({name:document.getElementById("name").value||null,type:final});
+}
+function openModal(title,text){
+ document.getElementById("modal").style.display="flex";
+ document.getElementById("modal-content").innerHTML=
+ `<h2>${title}</h2><p>${text}</p>
+ <a href='https://buy.stripe.com/test_XXXX' class='btn btn-primary' target='_blank'>有料鑑定へ ¥480〜</a>
+ <div style='text-align:center;margin-top:10px;'><button class='btn btn-outline' onclick='closeModal()'>閉じる</button></div>`;
+}
+function closeModal(){document.getElementById("modal").style.display="none";}
+
+/* Firebase保存 */
+async function saveResult(data){
+ try{
+  if(window.saveToFirebase){window.saveToFirebase(data);}
+ }catch(e){console.warn(e);}
+}
+</script>
+
+<!-- Firebase -->
+<script type="module">
+const firebaseConfig={apiKey:"YOUR_API_KEY",authDomain:"YOUR_PROJECT.firebaseapp.com",projectId:"YOUR_PROJECT_ID",appId:"YOUR_APP_ID"};
+if(firebaseConfig.apiKey!=="YOUR_API_KEY"){
+ import("https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js").then(async({initializeApp})=>{
+  const {getFirestore,collection,addDoc,serverTimestamp}=await import("https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js");
+  const {getAuth,signInAnonymously}=await import("https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js");
+  const app=initializeApp(firebaseConfig);const db=getFirestore(app);
+  const auth=getAuth(app);signInAnonymously(auth);
+  window.saveToFirebase=async(d)=>{await addDoc(collection(db,"rokushin_results"),{...d,ts:serverTimestamp()});};
+ });
+}
+</script>
+</body>
+</html>
