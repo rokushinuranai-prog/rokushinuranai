@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>六神占い｜無料診断＋多占術／有料鑑定対応</title>
+<meta name="description" content="六神（龍・麒麟・鳳凰・玄武・白澤・饕餮）で魂の傾向を診断。五行・星宿・ラッキーカラーも表示。Stripe決済＆Firebase保存対応。">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700&family=Yuji+Syuku&display=swap" rel="stylesheet">
+<meta property="og:title" content="六神占い｜無料診断＋多占術／有料鑑定対応">
+<meta property="og:description" content="六神診断→結果保存、有料鑑定にも対応。スマホ最適化。">
+<meta property="og:type" content="website">
+<style>
+:root{
+  --gold:#b88a2b; --gold-soft:#d9b766; --ink:#1b1b1b; --bg1:#f7fbff; --bg2:#fff8e0; --aqua:#7ed6d0;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:'Noto Sans JP', system-ui, -apple-system, "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+  color:var(--ink); line-height:1.8; text-align:center;
+  background:
+    radial-gradient(60vw 40vh at 50% -10%, #fffef0 0%, transparent 60%),
+    radial-gradient(80vw 60vh at 50% 110%, #f0fbff 0%, transparent 60%),
+    linear-gradient(to bottom, var(--bg1), #fefefe 40%, var(--bg2));
+  min-height:100vh; overflow-x:hidden;
+}
+/* 神紋の薄柄（SVGパターン） */
+body::before{
+  content:""; position:fixed; inset:0; pointer-events:none; opacity:.08;
+  background-image:
+    radial-gradient( circle at 20% 30%, #d7e9ff 0 1px, transparent 1px ),
+    radial-gradient( circle at 80% 70%, #ffe6a8 0 1px, transparent 1px );
+  background-size: 120px 120px, 160px 160px;
+  filter: blur(0.4px);
+}
+/* 雲のベール */
+.glow{
+  position:fixed; inset:-20% -10% auto -10%; height:40vh; z-index:-1; opacity:.35;
+  background: radial-gradient(45vw 25vh at 50% 50%, #fff 0%, transparent 70%);
+  filter: blur(16px);
+}
+/* ブランドロゴ */
+.brand{
+  margin:28px 0 6px; letter-spacing:.08em;
+  font-family:'Yuji Syuku', serif; color:var(--gold);
+  font-size: clamp(28px, 4.8vw, 44px);
+  text-shadow: 0 1px 0 #fff, 0 0 18px rgba(255,226,160,.7);
+}
+.sub{ margin:0 0 18px; color:#6a5f3a; font-weight:600 }
+
+/* カード/レイアウト */
+.wrap{ width:min(1100px, 92%); margin:0 auto; }
+.panel{
+  background: linear-gradient(180deg, #ffffffcc, #fffdf6cc);
+  border:1px solid #ead9a8; border-radius:18px; padding:18px;
+  box-shadow: 0 10px 22px rgba(0,0,0,.06);
+}
+
+/* 六神カード */
+.grid{ display:grid; gap:14px; grid-template-columns:repeat(auto-fit, minmax(140px,1fr)); margin:18px 0 6px;}
+.card{
+  border:1px solid #e9dfbf; border-radius:14px; padding:12px 10px;
+  background: linear-gradient(135deg,#fff,#fff8ec);
+}
+.card h3{ margin:4px 0 2px; color:var(--gold); font-weight:700}
+.card small{ color:#5b5133 }
+
+/* ボタン */
+.btn{
+  display:inline-block; border:none; padding:12px 22px; margin:10px 6px;
+  border-radius:28px; font-weight:700; cursor:pointer; transition:.2s transform;
+}
+.btn:hover{ transform: translateY(-1px) scale(1.02) }
+.btn-primary{ background:linear-gradient(#ffd98a,#e2a93a); color:#3a2a00; border:1px solid #e8c16a }
+.btn-ghost{ background:#ffffffaa; border:1px solid #e0d7bf; color:#5a4a2a }
+
+/* 診断フォーム */
+#diag{ display:none; margin-top:16px }
+form{ text-align:left; width:min(560px, 92%); margin:0 auto }
+label{ font-weight:700; color:#5a4a2a; display:block; margin:12px 0 6px }
+select,input[type=text]{ width:100%; padding:10px 12px; border-radius:10px; border:1px solid #cfc8b0; background:#fff }
+
+/* 結果 */
+#result{ display:none; }
+.result{
+  margin:18px auto; width:min(720px, 95%); text-align:left; padding:18px 16px;
+}
+.result h2{ color:var(--gold); margin:0 0 6px }
+.badge{ display:inline-block; padding:4px 10px; border-radius:20px; background:#fff4cf; border:1px solid #f0dca0; color:#6d5717; font-weight:700 }
+
+/* 多占術 */
+.multi{ margin-top:8px; padding:14px; border-radius:14px; background:#fffffe; border:1px solid #efead6 }
+.multi h4{ margin:.2em 0; color:#7d5a1a }
+
+/* フッター */
+footer{ margin:26px 0 60px; color:#6a5f3a; }
+hr.sep{ border:none; border-top:1px dashed #e7d9b2; margin:18px auto; width:90% }
+
+/* モバイル最適 */
+@media (max-width:480px){
+  .brand{ font-size:28px }
+  .card small{ font-size:.9em }
+}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+
+<header class="wrap">
+  <div class="brand">六神占い</div>
+  <div class="sub">魂の守護獣を見出し、運命と調和する。</div>
+  <div class="panel">
+    <p style="margin-top:4px">六神：<b>龍・麒麟・鳳凰・玄武・白澤・饕餮</b>。まずは無料診断から。</p>
+    <button class="btn btn-primary" onclick="goDiag()">無料診断をはじめる</button>
+    <button class="btn btn-ghost" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">六神とは</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- 六神紹介 -->
+  <section id="about" class="panel" style="margin-top:16px">
+    <h2 style="margin:6px 0 10px;color:#a27a2b">六神（ろくしん）とは</h2>
+    <div class="grid">
+      <div class="card"><h3>龍</h3><small>行動力・守護。天を駆け、道を切り拓く。</small></div>
+      <div class="card"><h3>麒麟</h3><small>調和・正義。誠実と秩序で世界を整える。</small></div>
+      <div class="card"><h3>鳳凰</h3><small>再生・繁栄。美しく蘇り、希望を灯す。</small></div>
+      <div class="card"><h3>玄武</h3><small>忍耐・安定。継続と信頼で土台を築く。</small></div>
+      <div class="card"><h3>白澤</h3><small>知恵・洞察。真を見抜く理智の賢者。</small></div>
+      <div class="card"><h3>饕餮</h3><small>勇気・突破。恐れを破り、未来を拓く。</small></div>
+    </div>
+  </section>
+
+  <!-- 診断フォーム -->
+  <section id="diag" class="panel">
+    <h2 style="color:#a27a2b;margin:6px 0 10px">六神診断</h2>
+    <form id="form">
+      <label>① 今の自分に最も近いテーマ</label>
+      <select id="q1">
+        <option value="龍">行動と突破</option>
+        <option value="麒麟">人間関係の調和</option>
+        <option value="鳳凰">再出発／変化</option>
+        <option value="玄武">安定と継続</option>
+        <option value="白澤">学びと洞察</option>
+        <option value="饕餮">挑戦と冒険</option>
+      </select>
+
+      <label>② 直近1週間の雰囲気</label>
+      <select id="q2">
+        <option value="鳳凰">新陳代謝が起きている</option>
+        <option value="玄武">粘り強く進めたい</option>
+        <option value="龍">スピードを上げたい</option>
+        <option value="白澤">知識を吸収したい</option>
+        <option value="麒麟">周囲との橋渡しをしたい</option>
+        <option value="饕餮">一歩大きく賭けたい</option>
+      </select>
+
+      <label>ニックネーム（任意・保存用）</label>
+      <input type="text" id="name" placeholder="例）お名前">
+
+      <button type="button" class="btn btn-primary" onclick="diagnose()">結果を見る</button>
+    </form>
+  </section>
+
+  <!-- 結果 -->
+  <section id="result" class="panel">
+    <div class="result">
+      <span class="badge" id="badge">診断結果</span>
+      <h2 id="god-name">—</h2>
+      <p id="god-desc"></p>
+
+      <div class="multi">
+        <h4>五行の傾向（今週）</h4>
+        <p id="gogyo"></p>
+        <h4>星宿メッセージ</h4>
+        <p id="seisyuku"></p>
+        <h4>本日のラッキーカラー</h4>
+        <p id="color"></p>
+      </div>
+
+      <div style="margin-top:10px">
+        <!-- Stripe Payment Link（URL差し替え） -->
+        <a id="payLink" class="btn btn-primary" href="https://buy.stripe.com/xxxxxxxx"
+           target="_blank" rel="noopener">有料鑑定 ¥980（深掘り結果を受け取る）</a>
+        <div style="font-size:.9em;color:#6a5f3a;margin-top:6px">
+          ※Stripe Payment Link/Buy ButtonでApple Pay/Google Pay等に対応。後で差し替えOK。
+        </div>
+        <button class="btn btn-ghost" onclick="location.reload()">もう一度診断</button>
+      </div>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <!-- 事業系ページ（雛形） -->
+  <section class="panel" id="policies">
+    <h2 style="color:#a27a2b;margin:6px 0 10px">運営・ポリシー</h2>
+    <details>
+      <summary><b>プライバシーポリシー（雛形）</b></summary>
+      <p>当サイトは、診断結果やニックネーム等の最小限の情報のみを匿名で保存します。決済はStripeで行われ、当サイトのサーバーでカード情報を保持しません。個人情報の取り扱いは法令に基づき適切に行います。</p>
+    </details>
+    <details>
+      <summary><b>利用規約（雛形）</b></summary>
+      <p>本サービスはエンターテインメントです。結果の完全性を保証するものではありません。体験版は無料、有料鑑定は返金不可（法令で認められる場合を除く）とします。</p>
+    </details>
+  </section>
+</main>
+
+<footer class="wrap">
+  <p style="font-size:.9em">© 六神占い — ROKUSHIN. All rights reserved.</p>
+</footer>
+
+<!-- ここからスクリプト：診断ロジック／決済＆Firebase保存 -->
+<script>
+/* ===== 六神テキスト ===== */
+const GOD = {
+  "龍":"【龍】行動力・守護。勢いと信念で道を切り拓くリーダータイプ。直感が冴え、困難の核心を射抜く。",
+  "麒麟":"【麒麟】調和・正義。誠実さとバランス感覚で人と場を整える。橋渡し役として真価を発揮。",
+  "鳳凰":"【鳳凰】再生・繁栄。何度でも美しく蘇る変容の象徴。美意識と創造性が鍵。",
+  "玄武":"【玄武】忍耐・安定。継続と堅実さで土台を築く。信頼される裏方の要。",
+  "白澤":"【白澤】知恵・洞察。理性と直観の統合。情報を見極め、最短解に導く賢者。",
+  "饕餮":"【饕餮】勇気・突破。臆せず扉を開く戦士。未知への一歩が運命を動かす。"
+};
+const GOGYO=[
+  "火：情熱と決断。今週は『即断即決』が吉。",
+  "水：直感と共感。弱さを見せる勇気が縁を呼ぶ。",
+  "土：基盤固め。習慣化と仕組み化で成果倍増。",
+  "金：収穫期。交渉・契約・値付けにツキあり。",
+  "木：芽吹き。人脈と学びが未来を広げる。"
+];
+const SEISYUKU=[
+  "角宿：スタートに吉。発信・提案で道が開く。",
+  "参宿：挑戦の刻。恐れより好奇心を優先。",
+  "斗宿：目標の再定義。優先順位を3つに絞る。",
+  "翼宿：ケアの週。睡眠と栄養が運を底上げ。"
+];
+const COLORS=["金","碧","朱","藍","白金","琥珀"];
+
+/* ===== 画面遷移 ===== */
+function goDiag(){
+  document.getElementById('diag').style.display='block';
+  document.getElementById('about').scrollIntoView({behavior:'smooth'});
+}
+function diagnose(){
+  const q1=document.getElementById('q1').value;
+  const q2=document.getElementById('q2').value;
+  const name=document.getElementById('name').value.trim();
+  const final = (q1===q2)?q1:(Math.random()>.5?q1:q2);
+
+  document.getElementById('god-name').textContent=final;
+  document.getElementById('god-desc').textContent=GOD[final];
+  document.getElementById('gogyo').textContent=GOGYO[Math.floor(Math.random()*GOGYO.length)];
+  document.getElementById('seisyuku').textContent=SEISYUKU[Math.floor(Math.random()*SEISYUKU.length)];
+  document.getElementById('color').textContent="今日の開運色は「"+COLORS[Math.floor(Math.random()*COLORS.length)]+"」。";
+
+  document.getElementById('diag').style.display='none';
+  document.getElementById('result').style.display='block';
+  window.scrollTo({top:0, behavior:'smooth'});
+
+  // 保存（Firebaseが有効なら）
+  if(window.saveResult){ window.saveResult({name, final}); }
+}
+</script>
+
+<!-- ===== Firebase（匿名Auth＋Firestore保存）===== -->
+<script type="module">
+/* ▼▼ ここを書き換え：Firebaseコンソールの値を貼付 ▼▼ */
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "SENDER_ID",
+  appId: "APP_ID"
+};
+/* ▲▲ ここまで ▲▲ */
+
+if(firebaseConfig.apiKey !== "YOUR_API_KEY"){
+  import("https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js").then(async ({initializeApp})=>{
+    const { getFirestore, collection, addDoc, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js");
+    const { getAuth, signInAnonymously } = await import("https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js");
+    const app=initializeApp(firebaseConfig);
+    const db=getFirestore(app);
+    const auth=getAuth(app);
+    signInAnonymously(auth).catch(console.error);
+
+    window.saveResult = async ({name, final})=>{
+      try{
+        await addDoc(collection(db,"rokushin_results"),{
+          name: name||null,
+          type: final,
+          ts: serverTimestamp(),
+          ua: navigator.userAgent
+        });
+      }catch(e){ console.warn("保存失敗:", e); }
+    };
+  });
+}else{
+  // 未設定なら保存スキップ
+  window.saveResult = ()=>{};
+}
+</script>
+
+<!-- ===== Stripe（即時導入：Payment Link／Buy Button） ===== -->
+<!-- 1) Payment Link：上の #payLink の href をStripeで発行したURLに差し替えるだけ  -->
+<!-- 2) Buy Button（任意）：Stripeダッシュボードでボタン生成→以下コードを貼付
+<script async src="https://js.stripe.com/v3/buy-button.js"></script>
+<stripe-buy-button buy-button-id="buy_btn_XXXX" publishable-key="pk_live_XXXX"></stripe-buy-button>
+-->
+
+<!-- 構造化データ（SEO） -->
+<script type="application/ld+json">
+{
+ "@context":"https://schema.org",
+ "@type":"WebSite",
+ "name":"六神占い",
+ "url":"https://example.com",
+ "description":"六神診断＋多占術。無料で相性・今週の運勢、深掘りは有料鑑定。",
+ "inLanguage":"ja"
+}
+</script>
+</body>
+</html>
