@@ -1,0 +1,63 @@
+body {
+  margin: 0;
+  font-family: "Hiragino Mincho ProN", serif;
+  color: #fff;
+  text-align: center;
+}
+
+.hero {
+  display: none;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.hero--day {
+  background-image: url("assets/bg-day.jpg");
+  color: #3b2f1a;
+}
+
+.hero--night {
+  background-image: url("assets/bg-night.jpg");
+}
+
+.logo {
+  max-width: 250px;
+  margin-top: 80px;
+}
+
+.btn-primary,
+.btn-outline {
+  font-size: 1rem;
+  padding: 12px 24px;
+  border-radius: 50px;
+  margin: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: linear-gradient(180deg, #f8e29b, #c59b2f);
+  color: #3b2f1a;
+}
+
+.btn-outline {
+  border: 1px solid #c59b2f;
+  background: transparent;
+  color: #c59b2f;
+}
+
+#mode-switch {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  background: transparent;
+  border: 1px solid #888;
+  border-radius: 30px;
+  color: #fff;
+  cursor: pointer;
+}
