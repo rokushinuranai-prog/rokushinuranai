@@ -1,0 +1,36 @@
+body {
+  margin: 0;
+  font-family: 'YuMincho', 'Hiragino Mincho ProN', serif;
+  background-color: #000;
+  color: #fff;
+  overflow-x: hidden;
+}
+
+.hero {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  text-align: center;
+  transition: opacity 1s ease;
+}
+
+/* 朝モード */
+.hero--day {
+  background: radial-gradient(120% 80% at 50% 0%, rgba(255,255,255,.6), rgba(255,255,255,0) 40%),
+              linear-gradient(#F6E9C7, #EBD19A 40%, #D8B469 70%, #C39B52 100%);
+  color: #3a2a05;
+}
+
+/* 夜モード */
+.hero--night {
+  background: radial-gradient(120% 80% at 50% 0%, rgba(220,235,255,.18), rgba(0,0,0,0) 45%),
+              linear-gradient(#0E1B28, #122337 55%, #0B1623 100%);
+  color: #fdfdfd;
+}
+
+/* ロゴ */
+.logo {
+  width: min(80vw, 580px);
+  height: auto;
+  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.4));
+}
