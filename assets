@@ -1,0 +1,10 @@
+/
+├─ index.html
+├─ mode-switch.js
+├─ css/
+│  └─ style.css
+└─ assets/
+   ├─ bg-day.jpg
+   ├─ bg-night.jpg
+   ├─ logo-jp-day.svg   （PNGにしたなら .png に）
+   └─ logo-jp-night.svg （PNGにしたなら .png に）
