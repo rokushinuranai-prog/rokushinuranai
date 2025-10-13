@@ -1,0 +1,23 @@
+:root { --shadow: 0 8px 28px rgba(0,0,0,.28); }
+*{box-sizing:border-box} html,body{height:100%}
+body{margin:0;font-family:"YuMincho","Hiragino Mincho ProN",serif;color:#fff;background:#000}
+
+.hero{
+  position:relative; min-height:100svh; display:grid; place-content:center; gap:28px;
+  text-align:center; padding:24px; background-size:cover; background-position:center;
+  transition:opacity .7s ease;
+}
+
+/* ここがポイント：CSS から assets へは ../assets */
+.hero--day  { color:#3a2a05; background-image:url("../assets/bg-day.jpg"); }
+.hero--night{ color:#f8fbff;  background-image:url("../assets/bg-night.jpg"); }
+
+.logo{width:min(82vw,560px); height:auto; filter:drop-shadow(var(--shadow))}
+.cta{display:flex; gap:14px; justify-content:center; flex-wrap:wrap}
+.btn{display:inline-block; padding:12px 20px; border-radius:999px; text-decoration:none; font-weight:700; letter-spacing:.06em}
+.btn.primary{background:linear-gradient(#f6d88a,#d8b469); color:#3a2a05; box-shadow:var(--shadow)}
+.btn.ghost{border:2px solid currentColor; color:inherit; background:transparent}
+.toggle{position:fixed; right:14px; top:14px; z-index:10; background:#0008; color:#fff; border:1px solid #fff3; border-radius:999px; padding:8px 12px; backdrop-filter:blur(8px)}
+
+body.is-day  .hero--night{display:none}
+body.is-night .hero--day{display:none}
